@@ -19,23 +19,42 @@ defaults:
 
 jobs:
   autobump:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       contents: write
       pull-requests: write
     steps:
-      - name: Set up Homebrew
-        id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@a657b8b0cd35d0f65cce41fce9b24cf054b49869 # 2026.08.24.1
+      # - name: Set up Homebrew
+      #   uses: Homebrew/actions/setup-homebrew@a657b8b0cd35d0f65cce41fce9b24cf054b49869 # 2026.08.24.1
 
-      - name: Set up git
-        id: git_setup
-        uses: Homebrew/actions/git-user-config@a657b8b0cd35d0f65cce41fce9b24cf054b49869 # 2026.08.24.1
+      # - name: Set up git
+      #   id: git_setup
+      #   uses: Homebrew/actions/git-user-config@a657b8b0cd35d0f65cce41fce9b24cf054b49869 # 2026.08.24.1
 
-      - name: Bump formulae
+      # - name: Bump formulae
+      #   env:
+      #     HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     HOMEBREW_GIT_COMMITTER_NAME: ${{ steps.git_setup.outputs.name }}
+      #     HOMEBREW_GIT_COMMITTER_EMAIL: ${{ steps.git_setup.outputs.email }}
+      #     TAP_NAME: ${{ steps.set-up-homebrew.outputs.tap-name }}
+      #   run: brew bump --no-fork --open-pr --formulae --bump-synced --tap="$TAP_NAME"
+
+      - name: Tap this repo
+        run: brew tap callmesangio/mise
+
+      - name: Bump cask
+        uses: Homebrew/actions/bump-packages@1f8e202ffddf94def7f42f6fa3a482e821489f9c # 2026.07.10.1
+        with:
+          # Custom GitHub access token with only the 'public_repo' scope enabled
+          token: ${{ github.token }}
+          # Bump only these casks if outdated
+          casks: callmesangio/mise/callmesangio-mise
+          # Do not use a fork for opening PR's
+          fork: false
+          # Tap-qualified names, e.g. user/tap/formula, are detected automatically.
+
+      - name: Merge
+        if: steps.pr.outputs.created == 'true'
         env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOMEBREW_GIT_COMMITTER_NAME: ${{ steps.git_setup.outputs.name }}
-          HOMEBREW_GIT_COMMITTER_EMAIL: ${{ steps.git_setup.outputs.email }}
-          TAP_NAME: ${{ steps.set-up-homebrew.outputs.tap-name }}
-        run: brew bump --no-fork --open-pr --formulae --bump-synced --tap="$TAP_NAME"
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr merge "${{ steps.pr.outputs.number }}"

@@ -1,7 +1,7 @@
 cask "callmesangio-mise" do
   arch arm: "arm64", intel: "x64"
 
-  version "2026.9.1"
+  version "2026.9.0"
   sha256 arm:   "1a80dac554bfbf96af29e2ffab9d79a02290733af505d013ff36e38d08b4cc08",
          intel: "a6eaa984fa292f5c4f6b9a96f40ab1ca466f58798e67c77af84463dca6918039"
 
