@@ -1,0 +1,39 @@
+name: Bump cask
+on:
+  schedule:
+    - cron: "21 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  CASK: callmesangio/mise/callmesangio-mise
+  HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+  HOMEBREW_GIT_NAME: github-actions[bot]
+  HOMEBREW_GIT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+  HOMEBREW_NO_ANALYTICS: 1
+
+jobs:
+  bump:
+    runs-on: macos-latest
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@3cdb78d0f62ad29dd32de765782654f4eedea607 # 2026.08.31.1
+
+      - name: Check for a newer version
+        id: lc
+        run: |
+          version=$(brew livecheck --newer-only --json "$CASK" |
+            jq -r '.[0].version.latest // empty')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Rewrite and commit the cask
+        if: steps.lc.outputs.version != ''
+        run: |
+          brew bump-cask-pr --write-only --commit --no-browse \
+            --version="${{ steps.lc.outputs.version }}" "$CASK"
+
+      - name: Push
+        if: steps.lc.outputs.version != ''
+        run: git -C "$(brew --repository callmesangio/mise)" push
