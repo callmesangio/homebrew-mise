@@ -16,6 +16,7 @@ env:
 jobs:
   bump:
     runs-on: macos-latest
+    timeout-minutes: 5
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@2026.10.12.1
