@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@2026.10.12.1
+        uses: Homebrew/actions/setup-homebrew@2026.10.19.1
         with:
           stable: true
 
@@ -38,6 +38,6 @@ jobs:
 
       - name: Push
         if: steps.lc.outputs.version != ''
-        uses: Homebrew/actions/git-try-push@2026.10.12.1
+        uses: Homebrew/actions/git-try-push@2026.10.19.1
         with:
           token: ${{ github.token }}
