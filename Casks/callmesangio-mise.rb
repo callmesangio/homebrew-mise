@@ -1,9 +1,9 @@
 cask "callmesangio-mise" do
   arch arm: "arm64", intel: "x64"
 
-  version "2026.11.0"
-  sha256 arm:   "536ca9908f021635064b9525e3ba5f60ddd5b5b4437a29bdfd4b1355ff9f6c45",
-         intel: "3f5e27d87b950257477554961694fa0fb118c0a600197077e15daa1a1c334b02"
+  version "2026.11.1"
+  sha256 arm:   "4fd6dabcc9a57050e8f2fd1e53fc6b74e82d8cd85ed1751fd172756888aa98bc",
+         intel: "4c86f557c17d237784bd259e6842e2a231d7f550afedca522a69da8a5dca1282"
 
   url "https://github.com/jdx/mise/releases/download/v#{version}/mise-v#{version}-macos-#{arch}.tar.xz"
   name "mise"
