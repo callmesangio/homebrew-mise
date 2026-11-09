@@ -4,10 +4,10 @@
 version: 'v0.0.3'
 workflows:
     '.github/workflows/bump.yml':
-        - 'homebrew/actions@2026.10.26.1'
+        - 'homebrew/actions@2026.11.02.1'
 dependencies:
-    'homebrew/actions@2026.10.26.1':
-        ref: '2026.10.26.1'
-        commit: 'sha1-d482da0e602890d3160aade42e72c8556103bf04'
+    'homebrew/actions@2026.11.02.1':
+        ref: '2026.11.02.1'
+        commit: 'sha1-c262868c096d909fc278daa87ed9772967331ea3'
         owner_id: 1503512
         repo_id: 202511568
